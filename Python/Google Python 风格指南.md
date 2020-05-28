@@ -32,7 +32,7 @@ pylint不完美. 要利用其优势, 我们有时侯需要: a) 围绕着它来�
 
 你可以通过设置一个行注释来抑制警告. 例如:
 
-``` {.sourceCode .python}
+```python
 dict = 'something awful'  # Bad Idea... pylint: disable=redefined-builtin
 ```
 
@@ -48,7 +48,7 @@ dict = 'something awful'  # Bad Idea... pylint: disable=redefined-builtin
 > >
 > > 要抑制"参数未使用"告警, 你可以用"\_"作为参数标识符, 或者在参数名前加"unused\_". 遇到不能改变参数名的情况, 你可以通过在函数开头"提到"它们来消除告警. 例如:
 > >
-> > ``` {.sourceCode .python}
+> > ```python
 > > def foo(a, unused_b, unused_c, d=None, e=None):
 > >  _ = d, e
 > >  return a
@@ -79,7 +79,7 @@ dict = 'something awful'  # Bad Idea... pylint: disable=redefined-builtin
 
 例如, 模块 `sound.effects.echo` 可以用如下方式导入:
 
-``` {.sourceCode .python}
+```python
 from sound.effects import echo
 ...
 echo.EchoFilter(input, output, delay=0.7, atten=4)
@@ -105,7 +105,7 @@ echo.EchoFilter(input, output, delay=0.7, atten=4)
 
 应该像下面这样导入:
 
-``` {.sourceCode .python}
+```python
 # Reference in code with complete name.
 import sound.effects.echo
 
@@ -136,7 +136,7 @@ from sound.effects import echo
 
 2. 模块或包应该定义自己的特定域的异常基类, 这个基类应该从内建的Exception类继承. 模块的异常基类应该叫做"Error".
 
-    > ``` {.sourceCode .python}
+    > ```python
     > class Error(Exception):
     >  pass   
     > ```
@@ -149,7 +149,7 @@ from sound.effects import echo
 
 6. 当捕获异常时, 使用 `as` 而不要用逗号. 例如
 
-    > ``` {.sourceCode .python}
+    > ```python
     > try:
     >  raise Error
     > except Error as error:
@@ -218,7 +218,7 @@ from sound.effects import echo
 结论:  
 适用于简单情况. 每个部分应该单独置于一行: 映射表达式, for语句, 过滤器表达式. 禁止多重for语句或过滤器表达式. 复杂情况下还是使用循环.
 
-``` {.sourceCode .python}
+```python
 Yes:
   result = []
   for x in range(10):
@@ -243,7 +243,7 @@ Yes:
       if jelly_bean.color == 'black')   
 ```
 
-``` {.sourceCode .python}
+```python
 No:
   result = [(x, y) for x in range(10) for y in range(5) if x * y > 10]
 
@@ -274,7 +274,7 @@ No:
 结论:  
 如果类型支持, 就使用默认迭代器和操作符, 例如列表, 字典和文件. 内建类型也定义了迭代器方法. 优先考虑这些方法, 而不是那些返回列表的方法. 当然，这样遍历容器时，你将不能修改容器.
 
-``` {.sourceCode .python}
+```python
 Yes:  for key in adict: ...
       if key not in adict: ...
       if obj in alist: ...
@@ -282,7 +282,7 @@ Yes:  for key in adict: ...
       for k, v in dict.iteritems(): ...
 ```
 
-``` {.sourceCode .python}
+```python
 No:   for key in adict.keys(): ...
       if not adict.has_key(key): ...
       for line in afile.readlines(): ...
@@ -370,13 +370,13 @@ Lambda函数
 
 不要在函数或方法定义中使用可变对象作为默认值.
 
-``` {.sourceCode .python}
+```python
 Yes: def foo(a, b=None):
          if b is None:
              b = []        
 ```
 
-``` {.sourceCode .python}
+```python
 No:  def foo(a, b=[]):
          ...    
 No:  def foo(a, b=time.time()):  # The time the module was loaded???
@@ -406,7 +406,7 @@ No:  def foo(a, b=FLAGS.my_thing):  # sys.argv has not yet been parsed...
 
 如果子类没有覆盖属性, 那么属性的继承可能看上去不明显. 因此使用者必须确保访问方法间接被调用, 以保证子类中的重载方法被属性调用(使用模板方法设计模式).
 
-``` {.sourceCode .python}
+```python
 Yes: import math
 
      class Square(object):
@@ -483,7 +483,7 @@ Python在布尔上下文中会将某些值求值为false. 按简单的直觉来�
 
 5. 处理整数时, 使用隐式false可能会得不偿失(即不小心将None当做0来处理). 你可以将一个已知是整型(且不是len()的返回结果)的值与0比较.
 
-    > ``` {.sourceCode .python}
+    > ```python
     > Yes: if not users:
     >       print 'no users'
     > 
@@ -494,7 +494,7 @@ Python在布尔上下文中会将某些值求值为false. 按简单的直觉来�
     >       self.handle_multiple_of_ten()  
     > ```
     >
-    > ``` {.sourceCode .python}
+    > ```python
     > No:  if len(users) == 0:
     >       print 'no users'
     > 
@@ -520,7 +520,7 @@ Python在布尔上下文中会将某些值求值为false. 按简单的直觉来�
 结论:  
 我们不使用不支持这些特性的Python版本, 所以没理由不用新的方式.
 
-``` {.sourceCode .python}
+```python
 Yes: words = foo.split(':')
 
      [x[1] for x in my_list if x[2] == 5]
@@ -530,7 +530,7 @@ Yes: words = foo.split(':')
      fn(*args, **kwargs)   
 ```
 
-``` {.sourceCode .python}
+```python
 No:  words = string.split(foo, ':')
 
      map(lambda x: x[1], filter(lambda x: x[2] == 5, my_list))
@@ -550,7 +550,7 @@ No:  words = string.split(foo, ':')
 
 一个使用这个特性的例子:
 
-``` {.sourceCode .python}
+```python
 def get_adder(summand1):
     """Returns a function that adds numbers to a given number."""
     def adder(summand2):
@@ -567,7 +567,7 @@ def get_adder(summand1):
 缺点:  
 可能导致让人迷惑的bug. 例如下面这个依据 [PEP-0227](http://www.python.org/dev/peps/pep-0227/) 的例子:
 
-``` {.sourceCode .python}
+```python
 i = 4
 def foo(x):
     def bar():
@@ -719,7 +719,7 @@ No:  # See details at
 
 除非是用于实现行连接, 否则不要在返回语句或条件语句中使用括号. 不过在元组两边使用括号是可以的.
 
-``` {.sourceCode .python}
+```python
 Yes: if foo:
          bar()
      while x:
@@ -732,7 +732,7 @@ Yes: if foo:
      for (x, y) in dict.items(): ...  
 ```
 
-``` {.sourceCode .python}
+```python
 No:  if (x):
          bar()
      if not(x):
@@ -774,7 +774,7 @@ Yes:   # Aligned with opening delimiter
        }
 ```
 
-``` {.sourceCode .python}
+```python
 No:    # Stuff on first line forbidden
       foo = long_function_name(var_one, var_two,
           var_three, var_four)
@@ -810,23 +810,23 @@ No:    # Stuff on first line forbidden
 
 括号内不要有空格.
 
-``` {.sourceCode .python}
+```python
 Yes: spam(ham[1], {eggs: 2}, [])
 ```
 
-``` {.sourceCode .python}
+```python
 No:  spam( ham[ 1 ], { eggs: 2 }, [ ] )
 ```
 
 不要在逗号, 分号, 冒号前面加空格, 但应该在它们后面加(除了在行尾).
 
-``` {.sourceCode .python}
+```python
 Yes: if x == 4:
          print x, y
      x, y = y, x
 ```
 
-``` {.sourceCode .python}
+```python
 No:  if x == 4 :
          print x , y
      x , y = y , x
@@ -834,45 +834,45 @@ No:  if x == 4 :
 
 参数列表, 索引或切片的左括号前不应加空格.
 
-``` {.sourceCode .python}
+```python
 Yes: spam(1)
 ```
 
-``` {.sourceCode .python}
+```python
 no: spam (1)
 ```
 
-``` {.sourceCode .python}
+```python
 Yes: dict['key'] = list[index]
 ```
 
-``` {.sourceCode .python}
+```python
 No:  dict ['key'] = list [index]       
 ```
 
 在二元操作符两边都加上一个空格, 比如赋值(=), 比较(==, \<, \>, !=, \<\>, \<=, \>=, in, not in, is, is not), 布尔(and, or, not). 至于算术操作符两边的空格该如何使用, 需要你自己好好判断. 不过两侧务必要保持一致.
 
-``` {.sourceCode .python}
+```python
 Yes: x == 1
 ```
 
-``` {.sourceCode .python}
+```python
 No:  x<1
 ```
 
 当'='用于指示关键字参数或默认参数值时, 不要在其两侧使用空格.
 
-``` {.sourceCode .python}
+```python
 Yes: def complex(real, imag=0.0): return magic(r=real, i=imag)
 ```
 
-``` {.sourceCode .python}
+```python
 No:  def complex(real, imag = 0.0): return magic(r = real, i = imag)
 ```
 
 不要用空格来垂直对齐多行间的标记, 因为这会成为维护的负担(适用于:, \#, =等):
 
-``` {.sourceCode .python}
+```python
 Yes:
      foo = 1000  # comment
      long_name = 2  # comment that should not be aligned
@@ -883,7 +883,7 @@ Yes:
          }
 ```
 
-``` {.sourceCode .python}
+```python
 No:
      foo       = 1000  # comment
      long_name = 2     # comment that should not be aligned
@@ -981,7 +981,7 @@ Shebang
 
 > 类应该在其定义下有一个用于描述该类的文档字符串. 如果你的类有公共属性(Attributes), 那么文档中应该有一个属性(Attributes)段. 并且应该遵守和函数参数相同的格式.
 >
-> ``` {.sourceCode .python}
+> ```python
 > class SampleClass(object):
 >  """Summary of class here.
 > 
@@ -1006,7 +1006,7 @@ Shebang
 
 > 最需要写注释的是代码中那些技巧性的部分. 如果你在下次 [代码审查](http://en.wikipedia.org/wiki/Code_review) 的时候必须解释一下, 那么你应该现在就给它写注释. 对于复杂的操作, 应该在其操作开始前写上若干行注释. 对于不是一目了然的代码, 应在其行尾添加注释.
 >
-> ``` {.sourceCode .python}
+> ```python
 > # We use a weighted dictionary search to find out where i is in
 > # the array.  We extrapolate position based on the largest num
 > # in the array and the array size and then do binary search to
@@ -1019,7 +1019,7 @@ Shebang
 >
 > 另一方面, 绝不要描述代码. 假设阅读代码的人比你更懂Python, 他只是不知道你的代码要做什么.
 >
-> ``` {.sourceCode .python}
+> ```python
 > # BAD COMMENT: Now go through the b array and make sure whenever i occurs
 > # the next element is i+1
 > ```
@@ -1031,7 +1031,7 @@ Shebang
 >
 > 如果一个类不继承自其它类, 就显式的从object继承. 嵌套类也一样.
 
-``` {.sourceCode .python}
+```python
 Yes: class SampleClass(object):
          pass
 
@@ -1046,7 +1046,7 @@ Yes: class SampleClass(object):
          """Explicitly inherits from another class already."""
 ```
 
-``` {.sourceCode .python}
+```python
 No: class SampleClass:
         pass
 
@@ -1066,7 +1066,7 @@ No: class SampleClass:
 >
 > 即使参数都是字符串, 使用%操作符或者格式化方法格式化字符串. 不过也不能一概而论, 你需要在+和%之间好好判定.
 
-``` {.sourceCode .python}
+```python
 Yes: x = a + b
      x = '%s, %s!' % (imperative, expletive)
      x = '{}, {}!'.format(imperative, expletive)
@@ -1074,7 +1074,7 @@ Yes: x = a + b
      x = 'name: {}; score: {}'.format(name, n)
 ```
 
-``` {.sourceCode .python}
+```python
 No: x = '%s%s' % (a, b)  # use + in this case
     x = '{}{}'.format(a, b)  # use + in this case
     x = imperative + ', ' + expletive + '!'
@@ -1083,7 +1083,7 @@ No: x = '%s%s' % (a, b)  # use + in this case
 
 避免在循环中用+和+=操作符来累加字符串. 由于字符串是不可变的, 这样做会创建不必要的临时对象, 并且导致二次方而不是线性的运行时间. 作为替代方案, 你可以将每个子串加入列表, 然后在循环结束后用 `.join` 连接列表. (也可以将每个子串写入一个 `cStringIO.StringIO` 缓存中.)
 
-``` {.sourceCode .python}
+```python
 Yes: items = ['<table>']
      for last_name, first_name in employee_list:
          items.append('<tr><td>%s, %s</td></tr>' % (last_name, first_name))
@@ -1091,7 +1091,7 @@ Yes: items = ['<table>']
      employee_table = ''.join(items)
 ```
 
-``` {.sourceCode .python}
+```python
 No: employee_table = '<table>'
     for last_name, first_name in employee_list:
         employee_table += '<tr><td>%s, %s</td></tr>' % (last_name, first_name)
@@ -1102,14 +1102,14 @@ No: employee_table = '<table>'
 
 (译者注:GPyLint疑为笔误, 应为PyLint.)
 
-``` {.sourceCode .python}
+```python
 Yes:
      Python('Why are you hiding your eyes?')
      Gollum("I'm scared of lint errors.")
      Narrator('"Good!" thought a happy Python reviewer.')
 ```
 
-``` {.sourceCode .python}
+```python
 No:
      Python("Why are you hiding your eyes?")
      Gollum('The lint. It burns. It burns us.')
@@ -1118,13 +1118,13 @@ No:
 
 为多行字符串使用三重双引号"""而非三重单引号'''. 当且仅当项目中使用单引号'来引用字符串时, 才可能会使用三重'''为非文档字符串的多行字符串来标识引用. 文档字符串必须使用三重双引号""". 不过要注意, 通常用隐式行连接更清晰, 因为多行字符串与程序其他部分的缩进方式不一致.
 
-``` {.sourceCode .python}
+```python
 Yes:
     print ("This is much nicer.\n"
            "Do it this way.\n")
 ```
 
-``` {.sourceCode .python}
+```python
 No:
       print """This is pretty ugly.
   Don't do this.
@@ -1151,7 +1151,7 @@ No:
 
 推荐使用 ["with"语句](http://docs.python.org/reference/compound_stmts.html#the-with-statement) 以管理文件:
 
-``` {.sourceCode .python}
+```python
 with open("hello.txt") as hello_file:
     for line in hello_file:
         print line
@@ -1159,7 +1159,7 @@ with open("hello.txt") as hello_file:
 
 对于不支持使用"with"语句的类似文件的对象,使用 contextlib.closing():
 
-``` {.sourceCode .python}
+```python
 import contextlib
 
 with contextlib.closing(urllib.urlopen("http://www.python.org/")) as front_page:
@@ -1178,7 +1178,7 @@ TODO注释
 
 TODO注释应该在所有开头处包含"TODO"字符串, 紧跟着是用括号括起来的你的名字, email地址或其它标识符. 然后是一个可选的冒号. 接着必须有一行注释, 解释要做什么. 主要目的是为了有一个统一的TODO格式, 这样添加注释的人就可以搜索到(并可以按需提供更多细节). 写了TODO注释并不保证写的人会亲自解决问题. 当你写了一个TODO, 请注上你的名字.
 
-``` {.sourceCode .python}
+```python
 # TODO(kl@gmail.com): Use a "*" here for string repetition.
 # TODO(Zeke) Change this to use relations.
 ```
@@ -1192,12 +1192,12 @@ TODO注释应该在所有开头处包含"TODO"字符串, 紧跟着是用括号�
 >
 > 每个导入应该独占一行
 
-``` {.sourceCode .python}
+```python
 Yes: import os
      import sys
 ```
 
-``` {.sourceCode .python}
+```python
 No:  import os, sys
 ```
 
@@ -1209,7 +1209,7 @@ No:  import os, sys
 
 每种分组中, 应该根据每个模块的完整包路径按字典序排序, 忽略大小写.
 
-``` {.sourceCode .python}
+```python
 import foo
 from foo import bar
 from foo.bar import baz
@@ -1226,13 +1226,13 @@ from Foob import ar
 
 不过, 如果测试结果与测试语句在一行放得下, 你也可以将它们放在同一行. 如果是if语句, 只有在没有else时才能这样做. 特别地, 绝不要对 `try/except` 这样做, 因为try和except不能放在同一行.
 
-``` {.sourceCode .python}
+```python
 Yes:
 
   if foo: bar(foo)
 ```
 
-``` {.sourceCode .python}
+```python
 No:
 
   if foo: bar(foo)
@@ -1303,7 +1303,7 @@ Main
 
 在Python中, pydoc以及单元测试要求模块必须是可导入的. 你的代码应该在执行主程序前总是检查 `if __name__ == '__main__'` , 这样当模块被导入时主程序就不会被执行.
 
-``` {.sourceCode .python}
+```python
 def main():
       ...
 
